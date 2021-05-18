@@ -86,11 +86,11 @@ unittest(test_operationalMode)
   SRF05 SRF(7, 6);
 
   assertEqual(0, SRF.getOperationalMode());
-  SRF.setModeRunningAverage();
+  SRF.setModeRunningAverage(0.2);
   assertEqual(3, SRF.getOperationalMode());
-  SRF.setModeMedian();
+  SRF.setModeMedian(7);
   assertEqual(2, SRF.getOperationalMode());
-  SRF.setModeAverage();
+  SRF.setModeAverage(7);
   assertEqual(1, SRF.getOperationalMode());
   SRF.setModeSingle();
   assertEqual(0, SRF.getOperationalMode());
