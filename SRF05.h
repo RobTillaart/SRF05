@@ -65,7 +65,7 @@ private:
   uint8_t  _trigger;
   uint8_t  _echo;
   uint8_t  _out;
-  uint8_t  _mode  = SRF_MODE_SINGLE;
+  uint8_t  _mode  = SRF05_MODE_SINGLE;
   uint8_t  _count = 1;
   float    _alpha = 1.0;
   float    _value = 0;
