@@ -49,7 +49,7 @@ unittest(test_constants)
 {
   assertEqual(0, SRF05_MODE_SINGLE);
   assertEqual(1, SRF05_MODE_AVERAGE);
-  assertEqual(2. SRF05_MODE_MEDIAN);
+  assertEqual(2, SRF05_MODE_MEDIAN);
   assertEqual(3, SRF05_MODE_RUN_AVERAGE);
 }
 
