@@ -18,6 +18,9 @@ Reasons to use a different value are temperature, humidity, type of gas, composi
 
 Default value for the speed of sound is set to 343 m/s. (~20°C)
 
+
+#### Effect temperature and humidity
+
 Several correction formulas for the speed of sound are available on the internet.
 
 ```
@@ -66,21 +69,31 @@ speed of sound however it is technically more correct to split the two.
 
 ## Interface
 
+```cpp
+#include "SRF05.h"
+```
+
+
+#### Constructor
+
 - **SRF05(const uint8_t trigger, const uint8_t echo, const uint8_t out = 0)** constructor to set the trigger and echo pin.
 It is not clear yet what the purpose of the OUT pin is.
 
 
-### Configuration
+#### Configuration
 
 - **void setSpeedOfSound(float sos)** adjust the speed of sound.
 - **float getSpeedOfSound()** return set value.
-- **void setCorrectionFactor(float cf = 1)** adjust the timing by a few percentage e.g. to adjust clocks. 
+- **bool setCorrectionFactor(float factor = 1)** adjust the timing by a few percentage e.g. to adjust clocks. 
 Should not be used to correct the speed of sound :)
+Returns false if factor <= 0.
 - **float getCorrectionFactor()** returns the current correction factor.
 
 
+#### Operational mode
+
 Normally a single read should be OK.
-- **void setModeSingle()** read single time.
+- **void setModeSingle()** read single time. This is default.
 - **void setModeAverage(uint8_t count)** read count times and take the average.
 - **void setModeMedian(uint8_t count)** read count times and take the median. count = 3..15
 - **void setModeRunningAverage(float alpha)** use a running average algorithm with a weight alpha.
@@ -97,7 +110,7 @@ Normally a single read should be OK.
 |                        |  other  |  error  |
 
 
-### Get distance
+#### Get distance
 
 - **uint32_t getTime()** returns distance in microseconds.
 - **uint32_t getMillimeter()** returns distance in millimetre.
@@ -106,8 +119,10 @@ Normally a single read should be OK.
 - **float getInch()** returns distance in inches. (1 inch = 2.54 cm).
 - **float getFeet()** returns distance in feet. (1 feet = 12 inch).
 
+Faster distance functions exist (TODO link).
 
-### Experimental - calibration
+
+#### Experimental - calibration
 
 Put the sensor at e.g. exactly 1.00 meter from a wall, and based 
 upon the timing it will give an estimate for the speed of sound. 
@@ -118,23 +133,40 @@ upon the timing it will give an estimate for the speed of sound.
 Need to compensate for temperature and humidity.
 
 
-### Performance
+#### Experimental - setTriggerLength
+
+SInce 0.1.4 two experimental functions are added to tune the length
+of the trigger signal. 
+The idea is that shorter triggers can be used with hard surfaces.
+Longer trigger for longer distances. 
+
+The effects and value needs investigation.
+Experiences are welcome.
+
+- **void setTriggerLength(uint8_t length = 10)** default length == 10 us.
+- **uint8_t getTriggerLength()** returns set length.
+
+
+
+#### Performance
 
 Assumes default speed of sound of 340 m/sec.
-Distance is in meters and equals total distance (forth and back).
+Distance is in centimetres and equals total distance (forth and back).
 
-| Distance | time (us) |
-|:--------:|----------:|
-|    1     |     2.94  |
-|    2     |     5.88  |
-|    5     |    14.71  |
-|    10    |    29.41  |
-|    20    |    58.82  |
-|    50    |   147.06  |
-|    100   |   294.12  |
-|    200   |   588.24  |
-|    300   |   882.35  |
-|    400   |  1176.47  |
+|  Distance  |  time (us)  |
+|:----------:|------------:|
+|      1     |       2.94  |
+|      2     |       5.88  |
+|      5     |      14.71  |
+|      10    |      29.41  |
+|      20    |      58.82  |
+|      50    |     147.06  |
+|      100   |     294.12  |
+|      200   |     588.24  |
+|      300   |     882.35  |
+|      400   |    1176.47  |
+
+to be elaborated.
 
 
 ## Operational
@@ -144,25 +176,32 @@ See examples.
 
 ## Future
 
-#### must
-- investigate purpose of the OUT pin.
+#### Must
 
-#### should
+- investigate purpose/possibilities of the OUT pin.
+
+
+#### Should
+
 - add examples
   - DHT22 and the formula for SOS
-- add ```get- setTriggerLength()```
-- add ```float calcSOS(float temp, float humidity = 0);```
-- fix magic conversion numbers.
+- add **float calcSOS(float temp, float humidity = 0)**
+- investigate 
+  - should **setSpeedOfSound(float sos)** return bool if sos <=0 ?
+  - value of **setTriggerLength()**
 
-#### could
+
+#### Could
+
+- set default SOS to an SOS from the table instead of 340.
+
+
+#### Wont
+
+- print feet as 3'2" or  3-7/8 feet (is that needed in this lib)
+  - in printHelpers ?
+- fix magic conversion numbers.
 - add ```float lastValue()``` ?  
   - not all paths update this variable.
 - add ```float delta()``` difference with last value.
   - how to handle different units? or only time?
-- set default SOS to an SOS from the table instead of 340.
-
-
-#### wont
-- print feet as 3'2" or  3-7/8 feet (is that needed in this lib)
-  - in printHelpers ?
-
