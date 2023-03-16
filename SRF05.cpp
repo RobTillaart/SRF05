@@ -177,8 +177,7 @@ float SRF05::determineSpeedOfSound(uint16_t distance)
     sum += _read();
     delay(1);
   }
-  //  sos = (count * 2mtr * mtr 2 micros) * distance / microseconds
-  float sos = (16 * 2 * 1e6) * distance / sum;
+  float sos = (16 * 2e6) * distance / sum;
   return sos;
 }
 

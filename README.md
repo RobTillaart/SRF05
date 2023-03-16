@@ -128,17 +128,15 @@ See table below.
 - **float getInch()** returns distance in inches. (1 inch = 2.54 cm).
 - **float getFeet()** returns distance in feet. (1 feet = 12 inch).
 
-Faster distance functions exist (TODO link).
-
 
 #### Experimental - setTriggerLength
 
-SInce 0.1.4 two experimental functions are added to tune the length
+Since 0.1.4 two experimental functions are added to tune the length
 of the trigger signal. 
-The idea is that shorter triggers can be used with hard surfaces.
-Longer trigger for longer distances. 
+The idea is that shorter triggers can be used with harder surfaces
+or short distances. Longer trigger for longer distances.
 
-The effects and value needs investigation.
+The effects and value of adjusting trigger length needs investigation.
 Experiences are welcome.
 
 - **void setTriggerLength(uint8_t length = 10)** default length == 10 us.
@@ -151,15 +149,16 @@ Put the sensor at exactly 1.00 meter from a wall, and based
 upon the timing it will give an estimate for the speed of sound. 
 0.1.2 version seems to be accurate within 5 %.
 
-- **float determineSpeedOfSound(uint16_t distance)** 
+- **float determineSpeedOfSound(uint16_t distance)** distance is between 
+sensor and the wall - not forth and back.
+The distance is averaged over 16 measurements.
 
-Need to compensate for temperature and humidity.
+Function can be used to compensate for temperature and humidity.
 
 
 #### Performance
 
 Assumes default speed of sound of 340 m/sec.
-Distance is in centimetres and equals total distance (forth and back).
 
 | distance (cm) | time (us) |
 |:-------------:|----------:|
