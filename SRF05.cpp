@@ -65,6 +65,7 @@ void SRF05::setModeSingle()
 void SRF05::setModeAverage(uint8_t count)
 {
   _mode  = SRF05_MODE_AVERAGE;
+  if (_count == 0)  _count = 1;
   _count = count;
 }
 
@@ -167,16 +168,17 @@ float SRF05::getFeet()
 }
 
 
-//  assumes a distance of 1.00 meter
-float SRF05::determineSpeedOfSound(uint16_t count)
+//  EXPERIMENTAL
+float SRF05::determineSpeedOfSound(uint16_t distance)
 {
   float sum = 0;
-  for (uint16_t i = 0; i < count; i++)
+  for (uint16_t i = 0; i < 16; i++)
   {
     sum += _read();
     delay(1);
   }
-  float sos = 2e6 * count / sum;
+  //  sos = (count * 2mtr * mtr 2 micros) * distance / microseconds
+  float sos = (16 * 2 * 1e6) * distance / sum;
   return sos;
 }
 
@@ -201,7 +203,7 @@ uint32_t SRF05::lastTime()
 
 //////////////////////////////////////////////////
 //
-// private
+//  PRIVATE
 //
 uint32_t SRF05::_read()
 {

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - add **uint32_t lastTime()**
 - changed return type **bool setCorrectionFactor()**
 - add experimental **get- setTriggerLength()**
+- redo **determineSpeedOfSound()**
 - update readme.md
 - update GitHub actions
 - update license 2023

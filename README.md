@@ -97,10 +97,13 @@ Returns false if factor <= 0.
 
 Normally a single read should be OK.
 
-- **void setModeSingle()** read a single time. This is the default.
+- **void setModeSingle()** read a single time. 
+This is the default and typical the fastest.
 - **void setModeAverage(uint8_t count)** read count times and take the average.
+Note: between the reads there is a delay of 1 millisecond.
 - **void setModeMedian(uint8_t count)** read count times and take the median. 
 count must between 3 and 15 otherwise it is clipped.
+Note: between the reads there is a delay of 1 millisecond.
 - **void setModeRunningAverage(float alpha)** use a running average algorithm 
 with a weight alpha. Value for alpha depends on your application.
 - **uint8_t getOperationalMode()** returns the operational mode 0..3.
@@ -128,17 +131,6 @@ See table below.
 Faster distance functions exist (TODO link).
 
 
-#### Experimental - calibration
-
-Put the sensor at e.g. exactly 1.00 meter from a wall, and based 
-upon the timing it will give an estimate for the speed of sound. 
-0.1.2 version seems to be accurate within 5 %.
-
-- **float determineSpeedOfSound(uint16_t distance)** 
-
-Need to compensate for temperature and humidity.
-
-
 #### Experimental - setTriggerLength
 
 SInce 0.1.4 two experimental functions are added to tune the length
@@ -153,23 +145,34 @@ Experiences are welcome.
 - **uint8_t getTriggerLength()** returns set length.
 
 
+#### Experimental - calibration
+
+Put the sensor at exactly 1.00 meter from a wall, and based 
+upon the timing it will give an estimate for the speed of sound. 
+0.1.2 version seems to be accurate within 5 %.
+
+- **float determineSpeedOfSound(uint16_t distance)** 
+
+Need to compensate for temperature and humidity.
+
+
 #### Performance
 
 Assumes default speed of sound of 340 m/sec.
 Distance is in centimetres and equals total distance (forth and back).
 
-|  Distance  |  time (us)  |
-|:----------:|------------:|
-|      1     |       2.94  |
-|      2     |       5.88  |
-|      5     |      14.71  |
-|      10    |      29.41  |
-|      20    |      58.82  |
-|      50    |     147.06  |
-|      100   |     294.12  |
-|      200   |     588.24  |
-|      300   |     882.35  |
-|      400   |    1176.47  |
+| distance (cm) | time (us) |
+|:-------------:|----------:|
+|        1      |     29.4  |
+|        2      |     58.8  |
+|        5      |    147.1  |
+|       10      |    294.1  |
+|       20      |    588.2  |
+|       50      |   1470.6  |
+|      100      |   2941.2  |
+|      200      |   5882.4  |
+|      300      |   8823.5  |
+|      400      |  11764.7  |
 
 to be elaborated.
 
@@ -200,6 +203,7 @@ See examples.
 
 - set default SOS to an SOS from the table instead of 340.
 - add example to determine the correction factor?
+- delay(1) in average configurable?
 
 
 #### Wont
