@@ -18,7 +18,7 @@ void setup()
   Serial.begin(115200);
   Serial.println();
   Serial.println(__FILE__);
-  Serial.println("SRF05_LIB_VERSION: ");
+  Serial.print("SRF05_LIB_VERSION: ");
   Serial.println(SRF05_LIB_VERSION);
   Serial.println();
 
