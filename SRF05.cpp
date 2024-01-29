@@ -1,7 +1,7 @@
 //
 //    FILE: SRF05.cpp
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.1.5
+// VERSION: 0.1.6
 //    DATE: 2021-05-17
 // PURPOSE: Arduino library for the SRF05 distance sensor (and compatibles)
 //     URL: https://github.com/RobTillaart/SRF05
@@ -19,16 +19,17 @@ SRF05::SRF05(const uint8_t trigger, const uint8_t echo, const uint8_t out)
   _trigger = trigger;
   _echo    = echo;
   _out     = out;
-  _mode    = 0;
+  _mode    = SRF05_MODE_SINGLE;
+
   pinMode(_trigger, OUTPUT);
   digitalWrite(_trigger, LOW);
   pinMode(_echo, INPUT);
 }
 
 
-void SRF05::setSpeedOfSound(float sos)
+void SRF05::setSpeedOfSound(float speedOfSound)
 {
-  _speedOfSound = sos;
+  _speedOfSound = speedOfSound;
 }
 
 float SRF05::getSpeedOfSound()
@@ -64,7 +65,7 @@ void SRF05::setModeSingle()
 
 void SRF05::setModeAverage(uint8_t count)
 {
-  _mode  = SRF05_MODE_AVERAGE;
+  _mode = SRF05_MODE_AVERAGE;
   if (_count == 0)  _count = 1;
   _count = count;
 }
@@ -81,6 +82,7 @@ void SRF05::setModeMedian(uint8_t count)
 
 void SRF05::setModeRunningAverage(float alpha)
 {
+  
   _mode  = SRF05_MODE_RUN_AVERAGE;
   _count = 1;
   _alpha = alpha;
@@ -135,6 +137,7 @@ uint32_t SRF05::getTime()
       _value = (1 - _alpha) * _value + _alpha * _read();
       return _value;
   }
+  return 0;  //  should not happen
 }
 
 
@@ -197,6 +200,29 @@ uint8_t SRF05::getTriggerLength()
 uint32_t SRF05::lastTime()
 {
   return _lastTime;
+}
+
+
+float SRF05::calculateSpeedOfSound(float temperature, float humidity)
+{
+  //  EXPERIMENTAL
+  //  based upon https://forum.arduino.cc/t/ultrasonic-sensor-to-determine-water-level/64890/12
+  //  t in Kelvin
+  //  float t = temperature + 273.15;
+  //  float RH = humidity;
+  //  float sos = 331.45 * sqrt(t/273.15) * (1 + RH/100 * 0.11 * pow(1.82, (t-273)/10));
+  //  float sos = 331.45 * sqrt(1 + t/273);  //  0% humidity 
+  //  float sos = 331.45 + 0.606 * temperature + 0.0124 * humidity;
+  //  float sos = 331.45 * sqrt(t/273.15);
+  //  sos = sos * (1 + RH * 0.01)
+  
+  float sos = 331.45 * sqrt(1 + temperature/273.16);
+  if ((temperature >= 0) && (humidity > 0)) 
+  {
+    float offset = (temperature + 2) * 0.0006255;  //  empirical formula
+    sos += (humidity * offset);
+  }
+  return sos;
 }
 
 

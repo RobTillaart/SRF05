@@ -21,16 +21,20 @@ SRF05 SRF(trigger, echo);
 void setup()
 {
   Serial.begin(115200);
+  Serial.println();
   Serial.println(__FILE__);
+  Serial.print("SRF05_LIB_VERSION: ");
+  Serial.println(SRF05_LIB_VERSION);
+  Serial.println();
 
-  // SRF.setCorrectionFactor(1.035);
+  //  SRF.setCorrectionFactor(1.035);
 }
 
 
 void loop()
 {
   static uint32_t prev = millis();
-  float s = SRF.determineSpeedOfSound(500);  // test 500 x 2 meter
+  float s = SRF.determineSpeedOfSound(500);  //  test 500 x 2 meter
   uint32_t now = millis();
   Serial.print(now - prev);
   Serial.print("\t");
@@ -41,5 +45,5 @@ void loop()
 }
 
 
-// -- END OF FILE --
+//  -- END OF FILE --
 
