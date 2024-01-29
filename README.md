@@ -32,6 +32,9 @@ The library allows to set a correction factor to compensate for the timing of
 the **pulseIn()** function. This has in the end the same effect as changing the 
 speed of sound however it is technically more correct to keep the two separated.
 
+Note the library only uses the SRF04 compatibility mode (dual pin) and not the
+SRF05 (single pin for trigger and echo) yet.
+
 
 #### Effect temperature and humidity
 
@@ -253,6 +256,10 @@ See examples.
 - investigate 
   - should **setSpeedOfSound(float sos)** return bool if sos <=0 ?
   - value of **setTriggerLength()**
+- investigate switching between single pin (SRF05) mode and dual pin (SRF04) mode.
+  - need a separate constructor.
+- investigate "guard time" between reads of 50 ms (20x /sec max).
+
 
 #### Could
 
