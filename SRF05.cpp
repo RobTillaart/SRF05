@@ -1,7 +1,7 @@
 //
 //    FILE: SRF05.cpp
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.1.6
+// VERSION: 0.2.0
 //    DATE: 2021-05-17
 // PURPOSE: Arduino library for the SRF05 distance sensor (and compatibles)
 //     URL: https://github.com/RobTillaart/SRF05
@@ -205,22 +205,16 @@ uint32_t SRF05::lastTime()
 
 float SRF05::calculateSpeedOfSound(float temperature, float humidity)
 {
-  //  EXPERIMENTAL
-  //  based upon https://forum.arduino.cc/t/ultrasonic-sensor-to-determine-water-level/64890/12
-  //  t in Kelvin
-  //  float t = temperature + 273.15;
-  //  float RH = humidity;
-  //  float sos = 331.45 * sqrt(t/273.15) * (1 + RH/100 * 0.11 * pow(1.82, (t-273)/10));
-  //  float sos = 331.45 * sqrt(1 + t/273);  //  0% humidity 
-  //  float sos = 331.45 + 0.606 * temperature + 0.0124 * humidity;
-  //  float sos = 331.45 * sqrt(t/273.15);
-  //  sos = sos * (1 + RH * 0.01)
-  
-  float sos = 331.45 * sqrt(1 + temperature/273.16);
-  if ((temperature >= 0) && (humidity > 0)) 
+  //  interpolate 
+  //  column RNH = 0%, from formula.
+  float sos     = 331.45 * sqrt(1 + temperature/273.15);
+  //  column RH = 100%, interpolation from spreadsheet
+  float sos_100 = 332.392083694084 + 0.683791630591631 * temperature;
+
+  //  interpolate the humidity between these 2
+  if (humidity > 0)
   {
-    float offset = (temperature + 2) * 0.0006255;  //  empirical formula
-    sos += (humidity * offset);
+    sos += (sos_100 - sos) * humidity * 0.01;
   }
   return sos;
 }

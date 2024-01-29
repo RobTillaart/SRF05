@@ -27,7 +27,7 @@ void setup()
   {
     Serial.print(temp);
     Serial.print("\t");
-    for (int hum = 0; hum < 100; hum += 10)
+    for (int hum = 0; hum <= 100; hum += 10)
     {
       float sos = SRF.calculateSpeedOfSound(temp, hum);
       Serial.print(sos, 2);
