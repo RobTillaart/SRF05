@@ -87,8 +87,8 @@ For temperatures under 0°C the effect of humidity seems to go to zero as we loo
 between 90% and 0% decreases when temperature drops.
 
 The function **float calculateSpeedOfSound()** uses interpolation formula derived from the table above.
-This returns a speed with an error margin < 1%, mostly < 0.5%
-  
+This returns a speed with an error margin less than 1%, and mostly even lower than 0.5%.
+
 
 ## Interface
 
