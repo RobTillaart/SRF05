@@ -22,7 +22,7 @@ Reasons to use a different value are temperature, humidity, type of gas, composi
 Default value for the speed of sound is set to 340 m/s. (~15°C)
 
 Since the version 0.2.0 the library has an interpolation formula to calculate the speed of sound
-given an temperature and humidity.
+given a temperature and humidity.
 
 The library has several ways to improve the quality of the measurements.
 E.g. by taking the average or the median of multiple readings.
@@ -53,9 +53,9 @@ and wind speed. The latter is a bit compensated for as it is one time "against" 
 and one time "with" the wind.
 
 
-#### Table speed of sound for temperature and humidity
+#### Table speed of sound for temperature and humidity in air at sea level.
 
-Temperature in Celsius
+Temperature in Celsius, Humidity in %, constant pressure == 1013 mBar.
 
 | temp |    0%  |   10%  |   20%  |   30%  |   40%  |   50%  |   60%  |   70%  |   80%  |   90%  |  100%  |
 |:----:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
@@ -87,11 +87,13 @@ Temperature in Celsius
 - values for 90% are calculated with - https://sengpielaudio.com/calculator-airpressure.htm
   - these match - https://www.engineeringtoolbox.com/air-speed-sound-d_603.html
 - the other values are linear interpolated between the 0 and 90 column (100% is extrapolated)
+- the table range is from -40 to +60 as that covers 99% of the "normal" temperatures occuring.
 
 For temperatures under 0°C the effect of humidity seems to go to zero as we look how the difference
 between 90% and 0% decreases when temperature drops.
 
-The function **float calculateSpeedOfSound()** uses an interpolation formula derived from the table above.
+The function **float calculateSpeedOfSound()** uses two interpolations derived from the table above.
+The function has no look-up table and uses no lookup table / RAM.
 This function returns a speed of sound with an error margin less than 1%, and mostly even lower than 0.5%
 compared to the numbers above.
 
@@ -112,6 +114,7 @@ It is not clear what the purpose of the OUT pin is, effectively it is not used y
 
 - **void setSpeedOfSound(float sos)** adjust the speed of sound in meters per second (m/s).
 See table above.
+The function has **no range check** and accepts even negative values.
 - **float getSpeedOfSound()** return set value (m/s)
 - **bool setCorrectionFactor(float factor = 1)** adjust the timing by a few percentage e.g. to adjust clocks.
 Typical values are between 0.95 and 1.05 to correct up to 5%.
@@ -148,13 +151,16 @@ See table below.
 |  SRF05_MODE_RUN_AVERAGE  |    3    |         |
 |                          |  other  |  error  |
 
-If other modi are needed, please open an issue.
+If other modi are needed, please open an issue and I see if it fits. 
+Of course one can create more elaborated processing of measurements 
+outside the library.
 
 
 #### Get distance
 
 - **uint32_t getTime()** returns distance in microseconds.
-This is the core measurement function.
+This is the core measurement function, the next five are wrappers 
+around this one.
 - **uint32_t getMillimeter()** returns distance in millimetre.
 - **float getCentimeter()** returns distance in centimetre.
 - **float getMeter()** returns distance in meter.
@@ -198,12 +204,18 @@ Calculates the speed of sound given a temperature in Celsius (-40..60)
 and relative humidity (0..100).
 
 The function uses an interpolation formula derived from the table above.
-This returns a speed with an error margin < 1%, mostly < 0.5%
+This returns a speed with an error margin less than 1%, and for the most
+part it is even better than 0.5%.
+
+Be aware that especially humidity sensors have an accuracy, often in the 
+range from two to five percent. So it won't get much better.
 
 
 #### Performance
 
 Assumes default speed of sound of 340 m/sec.
+
+Expected pulse timing.
 
 | distance (cm) | time (us) |
 |:-------------:|----------:|
@@ -217,8 +229,9 @@ Assumes default speed of sound of 340 m/sec.
 |      200      |   5882.4  |
 |      300      |   8823.5  |
 |      400      |  11764.7  |
+|      500      |  14705.9  |
 
-to be elaborated.
+To be elaborated.
 
 
 ## Operational
