@@ -172,9 +172,11 @@ float SRF05::getFeet()
 
 
 //  EXPERIMENTAL
-float SRF05::determineSpeedOfSound(uint16_t distance, uint8_t count)
+//  distance in meters (single trip)
+float SRF05::determineSpeedOfSound(float distance, uint8_t count)
 {
   float sum = 0;
+  if (count == 0) count = 1;
   while (count--)
   {
     sum += _read();

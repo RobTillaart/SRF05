@@ -48,6 +48,10 @@ v = 20.05 * sqrt(273.16 + temperature) (m/s)
 In fact humidity has an effect which increases with temperature so the formula is more complex.
 See discussion - https://forum.arduino.cc/t/ultrasonic-sensor-to-determine-water-level/64890/12
 
+Note that the speed of sound is also altered by air pressure (sea level .. up in sky)
+and wind speed. The latter is a bit compensated for as it is one time "against" the wind
+and one time "with" the wind.
+
 
 #### Table speed of sound for temperature and humidity
 
@@ -232,7 +236,7 @@ See examples.
 
 - add examples
   - DHT22 and the formula for SOS
-- add **float calcSOS(float temp, float humidity = 0)**
+- investigate effect of wind (speed of air) on the speed of sound.
 - investigate 
   - should **setSpeedOfSound(float sos)** return bool if sos <=0 ?
   - value of **setTriggerLength()**
@@ -240,6 +244,7 @@ See examples.
 #### Could
 
 - set default SOS to an SOS from the table instead of 340.
+  - function **begin(T, H)** ?
 - add example to determine the correction factor?
 - delay(1) in average configurable?
 
