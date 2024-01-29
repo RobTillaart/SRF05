@@ -35,7 +35,8 @@ speed of sound however it is technically more correct to keep the two separated.
 
 #### Effect temperature and humidity
 
-Several correction formulas for the speed of sound are available on the internet.
+Several correction formulas for the speed of sound are available on the internet
+to adjust the speed for temperature (°C) and humidity (%RH).
 
 ```
 // temperature in °C
@@ -86,8 +87,9 @@ Temperature in Celsius
 For temperatures under 0°C the effect of humidity seems to go to zero as we look how the difference
 between 90% and 0% decreases when temperature drops.
 
-The function **float calculateSpeedOfSound()** uses interpolation formula derived from the table above.
-This returns a speed with an error margin less than 1%, and mostly even lower than 0.5%.
+The function **float calculateSpeedOfSound()** uses an interpolation formula derived from the table above.
+This function returns a speed of sound with an error margin less than 1%, and mostly even lower than 0.5%
+compared to the numbers above.
 
 
 ## Interface
@@ -134,7 +136,7 @@ suited for changing distances.
 See table below.
 
 
-|  operational mode        |  value  |  Notes  |
+|  Operational mode        |  value  |  Notes  |
 |:-------------------------|:-------:|:-------:|
 |  SRF05_MODE_SINGLE       |    0    |         |
 |  SRF05_MODE_AVERAGE      |    1    |         |
@@ -142,10 +144,13 @@ See table below.
 |  SRF05_MODE_RUN_AVERAGE  |    3    |         |
 |                          |  other  |  error  |
 
+If other modi are needed, please open an issue.
+
 
 #### Get distance
 
 - **uint32_t getTime()** returns distance in microseconds.
+This is the core measurement function.
 - **uint32_t getMillimeter()** returns distance in millimetre.
 - **float getCentimeter()** returns distance in centimetre.
 - **float getMeter()** returns distance in meter.
@@ -158,7 +163,7 @@ See table below.
 Since 0.1.4 two experimental functions are added to tune the length
 of the trigger signal. 
 The idea is that shorter triggers can be used with harder surfaces
-or short distances. Longer trigger for longer distances.
+or short distances. Longer trigger thus for longer distances.
 
 The effects and value of adjusting trigger length needs investigation.
 Experiences are welcome.
@@ -173,17 +178,20 @@ Put the sensor at exactly 1.00 meter from a wall, and based
 upon the timing it will give an estimate for the speed of sound. 
 0.1.2 version seems to be accurate within 5 %.
 
-- **float determineSpeedOfSound(uint16_t distance)** distance is between 
-sensor and the wall - not forth and back.
-The distance is averaged over 16 measurements.
+- **float determineSpeedOfSound(float distance, uint8_t count = 64)** distance is between 
+sensor and the wall, single trip, not forth and back.
+The distance is in meters, returns meters/second.
+The distance is averaged over count measurements.
 
-Function can be used to compensate for temperature and humidity.
+This function can be used to compensate for temperature, humidity
+or even other types of gas (e.g. N2 only)
 
 
 #### Experimental - calculateSpeedOfSound
 
 - **float calculateSpeedOfSound(float temperature, float humidity)**
-Calculates the speed of sound given a temperature in Celsius (-40..60)and relative humidity (0..100).
+Calculates the speed of sound given a temperature in Celsius (-40..60) 
+and relative humidity (0..100).
 
 The function uses an interpolation formula derived from the table above.
 This returns a speed with an error margin < 1%, mostly < 0.5%

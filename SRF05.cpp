@@ -172,15 +172,17 @@ float SRF05::getFeet()
 
 
 //  EXPERIMENTAL
-float SRF05::determineSpeedOfSound(uint16_t distance)
+float SRF05::determineSpeedOfSound(uint16_t distance, uint8_t count)
 {
   float sum = 0;
-  for (uint16_t i = 0; i < 16; i++)
+  while (count--)
   {
     sum += _read();
     delay(1);
   }
-  float sos = (16 * 2e6) * distance / sum;
+  //  sos = distance travelled forth and back in micrometer 
+  //        divided by time in microseconds.
+  float sos = (count * distance * 2e6) / sum;
   return sos;
 }
 

@@ -52,7 +52,11 @@ public:
 
 
   //  Experimental - calibration
-  float    determineSpeedOfSound(uint16_t count);
+  //  The distance is averaged over 64 measurements.
+  //  blocks for 70-80 ms.
+  //  distance in meters (1 meter = 3.333 feet)
+  //  returns speed in m/s.
+  float    determineSpeedOfSound(float distance, uint8_t count = 64);
 
 
   //  Experimental - adjust trigger length 

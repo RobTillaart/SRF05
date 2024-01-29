@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.2.0] - 2024-01-28
 - add **float calculateSpeedOfSound(float temperature, float humidity)**
-- redo lookup table
+- redo lookup table SOS temperature humidity
+- redo **float determineSpeedOfSound(float distance, uint8_t count = 64)**
 - update readme.md
 - update examples
 
