@@ -22,7 +22,7 @@ const uint8_t SRF05_MODE_RUN_AVERAGE = 3;
 class SRF05
 {
 public:
-  explicit SRF05(const uint8_t trigger, const uint8_t echo, const uint8_t out = 0);
+  explicit SRF05(const uint8_t trigger, const uint8_t echo);
 
 
   //  configuration
@@ -78,14 +78,13 @@ public:
 private:
   uint8_t  _trigger;
   uint8_t  _echo;
-  uint8_t  _out;
   uint8_t  _mode  = SRF05_MODE_SINGLE;
   uint8_t  _count = 1;
   float    _alpha = 1.0;
   float    _value = 0;
   float    _correctionFactor = 1;
   uint8_t  _triggerLength    = 10;
-  float    _speedOfSound     = 340;      //  15°C  0%RH
+  float    _speedOfSound     = 340;      //  15°C  0%RH  Sea level
   uint32_t _lastTime = 0;
  
   uint32_t _read();

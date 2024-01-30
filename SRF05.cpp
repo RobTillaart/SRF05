@@ -14,11 +14,10 @@
 //
 //  CONSTRUCTORS
 //
-SRF05::SRF05(const uint8_t trigger, const uint8_t echo, const uint8_t out)
+SRF05::SRF05(const uint8_t trigger, const uint8_t echo)
 {
   _trigger = trigger;
   _echo    = echo;
-  _out     = out;
   _mode    = SRF05_MODE_SINGLE;
 
   pinMode(_trigger, OUTPUT);

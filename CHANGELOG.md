@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - add **float calculateSpeedOfSound(float temperature, float humidity)**
 - redo lookup table SOS temperature humidity
 - redo **float determineSpeedOfSound(float distance, uint8_t count = 64)**
+- removed the **Out** pin as it is non functional yet.
 - update readme.md
 - update examples
 

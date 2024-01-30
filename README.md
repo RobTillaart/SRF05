@@ -16,24 +16,28 @@ Arduino library for the SRF05 distance sensor and compatibles.
 
 ## Description
 
-The library allows to adjust to the speed of sound (sos).
-Reasons to use a different value are temperature, humidity, type of gas, composition etc.
+This library implements a API for a PING type of sensor. 
+It is expected to work for quite a range of them. 
+THe current version of the library only uses the SRF04 compatibility mode which uses a 
+separate TRIGGER and ECHO pin. 
+It does not (yet) implement the SRF05 mode in which TRIGGER and ECHO are the same.
 
-Default value for the speed of sound is set to 340 m/s. (~15°C)
+An important feature of this library is that it allows to adjust to the speed of sound (SOS).
+Reasons to use a different value for the speed of sound is that it varies depending on
+temperature, humidity, composition of the air, air pressure, other type of gas, etc.
+
+Default value for the speed of sound is set to 340 m/s. (air, ~15°C, sea level pressure)
 
 Since the version 0.2.0 the library has an interpolation formula to calculate the speed of sound
 given a temperature and humidity.
 
-The library has several ways to improve the quality of the measurements.
-E.g. by taking the average or the median of multiple readings.
-This can be set with the mode commands.
+The library has several ways to adjust / improve the quality of the measurements.
+E.g. by taking the average or the median of multiple readings, there will be less noise.
+This can be set with the different mode commands.
 
 The library allows to set a correction factor to compensate for the timing of 
 the **pulseIn()** function. This has in the end the same effect as changing the 
 speed of sound however it is technically more correct to keep the two separated.
-
-Note the library only uses the SRF04 compatibility mode (dual pin) and not the
-SRF05 (single pin for trigger and echo) yet.
 
 
 #### Effect temperature and humidity
@@ -51,12 +55,14 @@ v = 20.05 * sqrt(273.16 + temperature) (m/s)
 In fact humidity has an effect which increases with temperature so the formula is more complex.
 See discussion - https://forum.arduino.cc/t/ultrasonic-sensor-to-determine-water-level/64890/12
 
-Note that the speed of sound is also altered by air pressure (sea level .. up in sky)
-and wind speed. The latter is a bit compensated for as it is one time "against" the wind
-and one time "with" the wind.
+Note that the speed of sound is also altered by air pressure (sea level .. high in sky)
+and wind speed. The latter is a bit compensated for, as the acoustic pulse will go one time 
+"against" the wind and one time "with" the wind.
 
 
 #### Table speed of sound for temperature and humidity in air at sea level.
+
+(table redone completely in 0.2.0)
 
 Temperature in Celsius, Humidity in %, constant pressure == 1013 mBar.
 
@@ -92,13 +98,13 @@ Temperature in Celsius, Humidity in %, constant pressure == 1013 mBar.
 - the other values are linear interpolated between the 0 and 90 column (100% is extrapolated)
 - the table range is from -40 to +60 as that covers 99% of the "normal" temperatures occuring.
 
-For temperatures under 0°C the effect of humidity seems to go to zero as we look how the difference
+For temperatures under 0°C the effect of humidity goes to zero as we look how the difference
 between 90% and 0% decreases when temperature drops.
 
 The function **float calculateSpeedOfSound()** uses two interpolations derived from the table above.
 The function has no look-up table and uses no lookup table / RAM.
-This function returns a speed of sound with an error margin less than 1%, and mostly even lower than 0.5%
-compared to the numbers above.
+This function returns a speed of sound with an overall error margin less than 1%, and mostly even 
+lower than 0.5% compared to the numbers above.
 
 
 ## Interface
@@ -118,6 +124,8 @@ It is not clear what the purpose of the OUT pin is, effectively it is not used y
 - **void setSpeedOfSound(float sos)** adjust the speed of sound in meters per second (m/s).
 See table above.
 The function has **no range check** and accepts even negative values.
+This will cause a negative sign in the distances which can be handy sometimes when you have 
+two sensors in opposite directions.
 - **float getSpeedOfSound()** return set value (m/s)
 - **bool setCorrectionFactor(float factor = 1)** adjust the timing by a few percentage e.g. to adjust clocks.
 Typical values are between 0.95 and 1.05 to correct up to 5%.
