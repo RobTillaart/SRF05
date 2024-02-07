@@ -236,7 +236,7 @@ uint32_t SRF05::_read()
   digitalWrite(_trigger, LOW);
   pinMode(_echo, INPUT);
   uint32_t duration = pulseIn(_echo, HIGH, 300000);
-    if (_correctionFactor == 1)
+  if (_correctionFactor == 1)
   {
      return duration;
   }
