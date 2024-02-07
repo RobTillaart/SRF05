@@ -22,7 +22,7 @@ const uint8_t SRF05_MODE_RUN_AVERAGE = 3;
 class SRF05
 {
 public:
-  explicit SRF05(const uint8_t trigger, const uint8_t echo);
+  explicit SRF05(const uint8_t trigger, const uint8_t echo = 0);
 
 
   //  configuration
@@ -79,6 +79,7 @@ private:
   uint8_t  _trigger;
   uint8_t  _echo;
   uint8_t  _mode  = SRF05_MODE_SINGLE;
+  bool     _singlePin;  
   uint8_t  _count = 1;
   float    _alpha = 1.0;
   float    _value = 0;
