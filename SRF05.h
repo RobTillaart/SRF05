@@ -22,7 +22,7 @@ const uint8_t SRF05_MODE_RUN_AVERAGE = 3;
 class SRF05
 {
 public:
-  explicit SRF05(const uint8_t trigger, const uint8_t echo);
+  explicit SRF05(const uint8_t trigger, const uint8_t echo = 0);
 
 
   //  configuration

@@ -19,12 +19,13 @@ SRF05::SRF05(const uint8_t trigger, const uint8_t echo)
   _trigger = trigger;
   _echo    = echo;
   _mode    = SRF05_MODE_SINGLE;
-
+  if (echo == 0)
+  {
+      _echo = _trigger;
+  }
   pinMode(_trigger, OUTPUT);
   digitalWrite(_trigger, LOW);
-  pinMode(_echo, INPUT);
 }
-
 
 void SRF05::setSpeedOfSound(float speedOfSound)
 {
@@ -229,9 +230,11 @@ float SRF05::calculateSpeedOfSound(float temperature, float humidity)
 //
 uint32_t SRF05::_read()
 {
+  pinMode(_trigger, OUTPUT);
   digitalWrite(_trigger, HIGH);
   delayMicroseconds(_triggerLength);
   digitalWrite(_trigger, LOW);
+  pinMode(_echo, INPUT);
   uint32_t duration = pulseIn(_echo, HIGH, 300000);
   if (_correctionFactor == 1)
   {
