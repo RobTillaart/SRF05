@@ -26,7 +26,7 @@ getCentimeter	KEYWORD2
 getMeter	KEYWORD2
 getInch	KEYWORD2
 getFeet	KEYWORD2
-getYards()	KEYWORD2
+getYards	KEYWORD2
 
 determineSpeedOfSound	KEYWORD2
 
