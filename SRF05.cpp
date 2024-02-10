@@ -1,7 +1,7 @@
 //
 //    FILE: SRF05.cpp
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.2.0
+// VERSION: 0.3.0
 //    DATE: 2021-05-17
 // PURPOSE: Arduino library for the SRF05 distance sensor (and compatibles)
 //     URL: https://github.com/RobTillaart/SRF05
@@ -27,10 +27,12 @@ SRF05::SRF05(const uint8_t trigger, const uint8_t echo)
   digitalWrite(_trigger, LOW);
 }
 
+
 void SRF05::setSpeedOfSound(float speedOfSound)
 {
   _speedOfSound = speedOfSound;
 }
+
 
 float SRF05::getSpeedOfSound()
 {
@@ -43,13 +45,13 @@ bool SRF05::setCorrectionFactor(float factor)
   if (factor <= 0) return false;
   _correctionFactor = factor;
   return true;
-};
+}
 
 
 float SRF05::getCorrectionFactor()
 {
   return _correctionFactor;
-};
+}
 
 
 //////////////////////////////////////////////////
@@ -82,7 +84,6 @@ void SRF05::setModeMedian(uint8_t count)
 
 void SRF05::setModeRunningAverage(float alpha)
 {
-  
   _mode  = SRF05_MODE_RUN_AVERAGE;
   _count = 1;
   _alpha = alpha;
@@ -115,7 +116,7 @@ uint32_t SRF05::getTime()
       for (uint8_t s = 0; s < _count; s++)
       {
         sum += _read();
-        delay(1);
+        delayMicroseconds(_sampleInterval);
       }
       return round(sum / _count);
     }
@@ -126,7 +127,7 @@ uint32_t SRF05::getTime()
       for (uint8_t s = 0; s < _count; s++)
       {
         samples[s] = _read();
-        delay(1);
+        delayMicroseconds(_sampleInterval);
       }
       _insertSort(samples, _count);
       if (_count & 0x01) return samples[_count / 2];
@@ -171,6 +172,12 @@ float SRF05::getFeet()
 }
 
 
+float SRF05::getYards()
+{
+  return _speedOfSound * getTime() * 0.54681e-6;
+}
+
+
 //  EXPERIMENTAL
 //  distance in meters (single trip)
 float SRF05::determineSpeedOfSound(float distance, uint8_t count)
@@ -180,9 +187,9 @@ float SRF05::determineSpeedOfSound(float distance, uint8_t count)
   while (count--)
   {
     sum += _read();
-    delay(1);
+    delayMicroseconds(_sampleInterval);
   }
-  //  sos = distance travelled forth and back in micrometer 
+  //  sos = distance travelled forth and back in micrometer
   //        divided by time in microseconds.
   float sos = (count * distance * 2e6) / sum;
   return sos;
@@ -209,7 +216,7 @@ uint32_t SRF05::lastTime()
 
 float SRF05::calculateSpeedOfSound(float temperature, float humidity)
 {
-  //  interpolate 
+  //  interpolate
   //  column RNH = 0%, from formula.
   float sos     = 331.45 * sqrt(1 + temperature/273.15);
   //  column RH = 100%, interpolation from spreadsheet
@@ -230,13 +237,16 @@ float SRF05::calculateSpeedOfSound(float temperature, float humidity)
 //
 uint32_t SRF05::_read()
 {
+  //  Send pulse
   pinMode(_trigger, OUTPUT);
   digitalWrite(_trigger, HIGH);
   delayMicroseconds(_triggerLength);
   digitalWrite(_trigger, LOW);
+
+  //  Wait for echo
   pinMode(_echo, INPUT);
-  uint32_t duration = pulseIn(_echo, HIGH, 300000);
-  if (_correctionFactor == 1)
+  uint32_t duration = pulseIn(_echo, HIGH, 200000);  //  was 300000 (50+ meter)
+  if (_correctionFactor == 1.0)
   {
      return duration;
   }
@@ -244,6 +254,7 @@ uint32_t SRF05::_read()
 }
 
 
+//  for median
 void SRF05::_insertSort(uint32_t * array, uint8_t size)
 {
   uint8_t t, z;
@@ -263,5 +274,5 @@ void SRF05::_insertSort(uint32_t * array, uint8_t size)
 }
 
 
-// -- END OF FILE --
+//  -- END OF FILE --
 
