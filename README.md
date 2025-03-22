@@ -199,8 +199,8 @@ Default is 1000 us == 1 milliSecond. Maximum is 65535 microseconds.
 - **uint16_t getSampleInterval()** return set interval.
 
 |  Operational mode        |  Value  |  Notes  |
-|:-------------------------|:-------:|:-------:|
-|  SRF05_MODE_SINGLE       |    0    |
+|:-------------------------|:-------:|:--------|
+|  SRF05_MODE_SINGLE       |    0    |  defualt mode
 |  SRF05_MODE_AVERAGE      |    1    |  default sample interval 1000 us
 |  SRF05_MODE_MEDIAN       |    2    |  default sample interval 1000 us
 |  SRF05_MODE_RUN_AVERAGE  |    3    |
@@ -280,14 +280,15 @@ Expected pulse timing.
 |        5      |    147.1  |
 |       10      |    294.1  |
 |       20      |    588.2  |
-|       50      |   1470.6  |
-|      100      |   2941.2  |
-|      200      |   5882.4  |
-|      300      |   8823.5  |
-|      400      |  11764.7  |
-|      500      |  14705.9  |
+|               |           |
+|       50      |     1471  |
+|      100      |     2941  |
+|      200      |     5882  |
+|      300      |     8824  |
+|      400      |    11765  |
+|      500      |    14706  |
 
-To be elaborated.
+To be elaborated, precission is only 3 or 4 digits max.
 
 
 ## Operational
