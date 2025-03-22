@@ -200,7 +200,7 @@ Default is 1000 us == 1 milliSecond. Maximum is 65535 microseconds.
 
 |  Operational mode        |  Value  |  Notes  |
 |:-------------------------|:-------:|:--------|
-|  SRF05_MODE_SINGLE       |    0    |  defualt mode
+|  SRF05_MODE_SINGLE       |    0    |  default mode
 |  SRF05_MODE_AVERAGE      |    1    |  default sample interval 1000 us
 |  SRF05_MODE_MEDIAN       |    2    |  default sample interval 1000 us
 |  SRF05_MODE_RUN_AVERAGE  |    3    |
@@ -269,12 +269,12 @@ range from two to five percent. So it won't get much better.
 
 ### Performance
 
-Assumes default speed of sound of 340 m/sec.
+Assumes speed of sound of 340 m/sec.
 
-Expected pulse timing.
+Indicative pulse timing, note round trip is double distance!
 
-| distance (cm) | time (us) |
-|:-------------:|----------:|
+| distance (cm) | time (us) |  Notes  |
+|:-------------:|----------:|:--------|
 |        1      |     29.4  |
 |        2      |     58.8  |
 |        5      |    147.1  |
@@ -283,7 +283,7 @@ Expected pulse timing.
 |               |           |
 |       50      |     1471  |
 |      100      |     2941  |
-|      200      |     5882  |
+|      200      |     5882  |  blocks for approx. 6ms !
 |      300      |     8824  |
 |      400      |    11765  |
 |      500      |    14706  |
