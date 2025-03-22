@@ -61,13 +61,6 @@ speed of sound however it is technically more correct to keep the two separated.
 |  US-100     |    -    |  not tested yet
 
 
-### Connection
-
-How to connect:
-- https://www.robot-electronics.co.uk/htm/srf05tech.htm
-- https://github.com/stoduk/PingSerial  Serial IO with distance sensors e.g. US-100
-
-
 ### Effect temperature and humidity
 
 Several correction formulas for the speed of sound are available on the internet
@@ -137,7 +130,9 @@ lower than 0.5% compared to the numbers above.
 
 ### Related
 
-- https://www.robot-electronics.co.uk/htm/srf05tech.htm (good description of the sensor)
+- https://www.robot-electronics.co.uk/htm/srf05tech.htm Good documentation including how to connect.
+- https://randomnerdtutorials.com/complete-guide-for-ultrasonic-sensor-hc-sr04/ good guide.
+- https://github.com/stoduk/PingSerial  Serial IO with distance sensors e.g. US-100
 
 
 ## Interface
