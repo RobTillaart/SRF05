@@ -100,7 +100,7 @@ uint8_t SRF05::getOperationalMode()
 //
 //  INTERVAL
 //
-void SRF05::setSampleInterval(uint16_t microSeconds = 1000)
+void SRF05::setSampleInterval(uint16_t microSeconds)
 {
   _sampleInterval = microSeconds;
 }
